@@ -1,0 +1,67 @@
+Christmas tunes player (will play other tunes too!)
+
+by Tom de Simone 
+8th Dec 2009
+See it in action at http://meatfinish.co.uk/arduino/xmas_tunes/
+Inspired by the piezo circuit in the awesome oomlout beginner's guide for their Arduino Experimentation Kit (oomlout.com)
+This code is licensed as Creative Commons share-alike (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+
+******** TODO: ********
+ - Make toggle button work better
+ - Redo note frequencies
+
+
+Instructions
+============
+User selects 1 of 4 tunes to play by twisting a potentiometer and seeing a corresponding LED light up.
+They then press the microswitch to play the selected tune.
+
+If you just want to edit the melodies that are played, the only changes you need to make are in playTune(). This function works by calling parseTune()
+with the following parameters:
+
+char notes[]: a string that represents the notes of the song
+int beatLength: how long a beat should be, which has a direct effect on tempo. Smaller value -> quicker; bigger -> slower
+boolean loopSong: if true, the song will loop indefinitely (until you press the microswitch)
+
+So in order to modify an existing tune, you basically have to modify the above 3 parameters in the call to parseTune();
+
+Each tune is stored as a string of note names and their corresponding durations. Each token in the string can be represented
+by the following regex:
+ 
+  ([cdefgabCDEFGAB]#{0,1}[0-9]{1,2})|(,[0-9]{1,2})|\.
+  
+In other words, you can have a letter which represents the pitch (2 octaves possible: 'c' up to 'b', then 'C' up to 'B'),
+followed by a '#' if it is a sharp (there are no flats in this grammar), and then a number representing its duration,
+where 4 is a single beat (crotchet or 1/4 note), 2 is half a beat (quaver or 1/8 note), 8 is two beats (minim or 1/2 note) etc.
+The duration can be any number from 1-99, but you'll rarely need longer than 16. If 1 (semiquaver or 1/16 note) really isn't
+short enough for you, you could always increase the tempo ;)
+
+To add a rest, use a comma (',') and then a number for the rest duration as above.
+
+Finally, VERY IMPORTANT: EVERY tune you write should have a full stop/period ('.') as the last character in the string.
+This tells the Arduino that the tune has finished.
+  
+For example, the following are all valid tokens:
+
+  c2 // play a 'C' note for a duration of 2 (equivalent to a quaver or 1/8 note)
+  a#4 // play an 'A#' note for a duration of 4 (equivalent to a crotchet or 1/4 note)
+  A#4 // play an 'A#' note an octave higher for a duration of 4 (equivalent to a crotchet or 1/4 note)
+  ,8 // a minim (or 1/2 note) rest
+  
+The following are NOT valid tokens:
+
+  cBd // each of the 3 notes must be followed by a number representing its duration
+  ,#6 // a rest cannot be "sharpened"
+  
+The following is a valid string representing a melody:
+
+  "e4d4c4d4e4e4e4,4d4d4d4,4e4g4g4,4."
+  
+The following is NOT a valid string representing a melody:
+  
+  "e4d4c4d4e4e4e4,d4d4d4,4e4g4g4,4"
+                 ^                ^
+
+  because one of the rests is missing a duration value, and there is no full stop/period ('.') at the end of the string.
+  
+For more examples, look at the 4 melodies that are already written inside playTune() !
