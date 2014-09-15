@@ -4,7 +4,7 @@ Christmas tunes player (will play other tunes too!)
 
 by Tom de Simone 
 8th Dec 2009
-Get the circuit design and see it in action at http://meatfinish.co.uk/2010/12/12/arduino-christmas-tunes-player/
+Get the circuit design and see it in action at http://meatfinish.wordpress.com/2010/12/12/arduino-christmas-tunes-player/
 Inspired by the piezo circuit in the awesome oomlout beginner's guide for their Arduino Experimentation Kit (oomlout.com)
 This code is licensed as Creative Commons share-alike (http://creativecommons.org/licenses/by-nc-sa/3.0/)
 
